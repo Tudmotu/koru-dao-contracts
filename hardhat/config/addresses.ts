@@ -21,6 +21,7 @@ export const getLensHubAddress = (network: string): string => {
 
   switch (network) {
     case "hardhat":
+    case "localhost":
     case "matic":
       return LENS_HUB_MATIC;
     case "mumbai":

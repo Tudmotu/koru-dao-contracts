@@ -32,6 +32,7 @@ describe("KoruDao test", function () {
   this.timeout(0);
 
   let user: SignerWithAddress;
+  let otherUser: SignerWithAddress;
   let lensHandleOwner: Signer;
   let gelato: Signer;
   let koruDaoLensHandleOwner: Signer;
@@ -45,7 +46,7 @@ describe("KoruDao test", function () {
   beforeEach(async function () {
     await deployments.fixture();
 
-    [user] = await ethers.getSigners();
+    [user, otherUser] = await ethers.getSigners();
 
     koruDao = <KoruDao>await ethers.getContract("KoruDao");
     koruDaoNft = <KoruDaoNFT>await ethers.getContract("KoruDaoNFT");
@@ -86,6 +87,28 @@ describe("KoruDao test", function () {
 
     await koruDao.setDefaultProfile(koruDaoLensId);
   });
+
+    describe.only("QuakDAO", () => {
+        it("should not allow transferring for non admin", async () => {
+            console.log(otherUser.address)
+            await expect(
+                koruDao.connect(otherUser).transferLensHandle(
+                    user.address,
+                    koruDaoLensId
+                )
+            ).to.be.revertedWith('NOT_AUTHORIZED');
+        });
+
+        it("should allow transferring its lens handle", async () => {
+            await koruDao.connect(user).transferLensHandle(
+                user.address,
+                koruDaoLensId
+            );
+
+            const holder: string = await lensHub.ownerOf(koruDaoLensId);
+            expect(holder).to.equal(user.address);
+        });
+    });
 
   it("mint - with lens handle", async () => {
     await transferLensHandleToUser();

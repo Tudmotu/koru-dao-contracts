@@ -28,20 +28,20 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
 
   if (hre.network.name === "matic") {
     hasRestrictions = true;
-    koruDaoProfileId = 42808;
-    minPubCount = 10;
-    minFollowers = 300;
+    koruDaoProfileId = process.env.LENS_PROFILE;
+    minPubCount = 0;
+    minFollowers = 0;
     isPaused = true;
   } else if (hre.network.name === "mumbai") {
     hasRestrictions = false;
-    koruDaoProfileId = 27647;
+    koruDaoProfileId = process.env.LENS_MUMBAI_PROFILE;
     minPubCount = 0;
     minFollowers = 0;
     isPaused = false;
   } else {
     //hardhat
     hasRestrictions = true;
-    koruDaoProfileId = 42808;
+    koruDaoProfileId = process.env.LENS_PROFILE;
     minPubCount = 0;
     minFollowers = 0;
     isPaused = false;
@@ -86,9 +86,9 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
 
 export default func;
 
-func.skip = async (hre: HardhatRuntimeEnvironment) => {
-  const shouldSkip = hre.network.name !== "hardhat";
-  return shouldSkip;
-};
+//func.skip = async (hre: HardhatRuntimeEnvironment) => {
+  //const shouldSkip = hre.network.name !== "hardhat";
+  //return shouldSkip;
+//};
 
 func.tags = ["KoruDaoNFT"];

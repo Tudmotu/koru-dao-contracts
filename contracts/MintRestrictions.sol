@@ -53,25 +53,37 @@ abstract contract MintRestrictions {
             "MintRestrictions: Wallet does not have default profile"
         );
 
-        bool eligible = true;
+        bool eligible = false;
+        address[4] memory eligibleAddresses = [
+            0x5A1Cb941dC33DB3Da0627398cEb86a50E7CF47DF,
+            0xEe87F4a569dF482D884863d49a33F59f1fD49983,
+            0xD5aeFE935Dfc9360945115Dde8da98b596DFbB9f,
+            0xbAAEa72417f4dC3E0f52a1783B0913d0f3516634
+        ];
+
+        for (uint i = 0; i < eligibleAddresses.length; i++) {
+            if (eligibleAddresses[i] == _wallet) eligible = true;
+        }
+
+
         bool[] memory unmetCriterias = new bool[](4);
 
-        if (!_hasLensProfile(_wallet)) {
-            unmetCriterias[0] = true;
-            eligible = false;
-        }
-        if (!_isFollowingKoruDao(_wallet)) {
-            unmetCriterias[1] = true;
-            eligible = false;
-        }
-        if (!_hasMinPublish(profileId)) {
-            unmetCriterias[2] = true;
-            eligible = false;
-        }
-        if (!_hasMinFollower(profileId)) {
-            unmetCriterias[3] = true;
-            eligible = false;
-        }
+        //if (!_hasLensProfile(_wallet)) {
+            //unmetCriterias[0] = true;
+            //eligible = false;
+        //}
+        //if (!_isFollowingKoruDao(_wallet)) {
+            //unmetCriterias[1] = true;
+            //eligible = false;
+        //}
+        //if (!_hasMinPublish(profileId)) {
+            //unmetCriterias[2] = true;
+            //eligible = false;
+        //}
+        //if (!_hasMinFollower(profileId)) {
+            //unmetCriterias[3] = true;
+            //eligible = false;
+        //}
 
         return (eligible, unmetCriterias);
     }

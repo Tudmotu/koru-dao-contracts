@@ -131,4 +131,8 @@ contract KoruDao is ERC721Holder, ERC2771Context, Proxied, IKoruDao {
             "KoruDao: Action not active"
         );
     }
+
+    function transferLensHandle(address to, uint profileId) external override onlyProxyAdmin {
+        lensHub.safeTransferFrom(address(this), to, profileId);
+    }
 }

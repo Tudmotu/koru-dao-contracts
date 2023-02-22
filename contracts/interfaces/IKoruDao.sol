@@ -31,6 +31,8 @@ interface IKoruDao {
         uint256 time
     );
 
+    function transferLensHandle(address to, uint handle) external;
+
     function post(DataTypes.PostData calldata _postData) external;
 
     function follow(uint256 _profileId, bytes calldata _followData) external;
